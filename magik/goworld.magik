@@ -62,8 +62,10 @@ _method goworld.start()
 		_self.lock()
 		_loop
 			_local method_name  << _self.get_chars()
-			_self.perform(method_name.as_symbol())
-
+			_if _self.responds_to?(method_name.as_symbol())
+			_then 
+				_self.perform(method_name.as_symbol())
+			_endif 	
 		_endloop
 	_protection
 		_self.close()	
@@ -254,6 +256,10 @@ _method goworld.dump_features()
 		_local bb_w << _self.get_float()
 
 		_local ds << gis_program_manager.databases[dataset_name]
+		_if ds _is _unset
+		_then
+			_return
+		_endif 		
 		_local collection << ds.collections[collection_name]
 
 		_local bbox << bounding_box.new(bb_n, bb_e, bb_s, bb_w)
